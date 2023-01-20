@@ -235,8 +235,8 @@ class CustomTextBox extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 3),
       height: 44,
       decoration: BoxDecoration(
-          color: textBoxColor,
-          border: Border.all(color: textBoxColor),
+          color: AppColor.textBoxColor,
+          border: Border.all(color: AppColor.textBoxColor),
           borderRadius: BorderRadius.circular(10)),
       child: TextField(
         controller: controller,
@@ -245,7 +245,7 @@ class CustomTextBox extends StatelessWidget {
             suffixIcon: suffix,
             border: InputBorder.none,
             hintText: hint,
-            hintStyle: const TextStyle(color: darker, fontSize: 15)),
+            hintStyle:   TextStyle(color: AppColor.darker, fontSize: 15)),
       ),
     );
   }
