@@ -250,3 +250,45 @@ class CustomTextBox extends StatelessWidget {
     );
   }
 }
+
+
+
+class SimpleFilledFormField extends StatelessWidget {
+  String label;
+  String? helperText;
+  IconData? prefixIcon;
+  IconData? suffixIcon;
+  TextInputType textInputType;
+  String? Function(String?)? validator;
+  TextEditingController? controller;
+  Function(String?)? onChanged;
+
+  SimpleFilledFormField({Key? key, this.label="",
+    this.prefixIcon,
+    this.suffixIcon,
+    this.validator,
+    this.controller,
+    this.helperText,
+    this.onChanged,
+    this.textInputType=TextInputType.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return  TextFormField(
+      keyboardType: textInputType,
+      validator: validator,
+      onChanged: onChanged,
+      controller: controller,
+      decoration: InputDecoration(
+          prefixIcon:prefixIcon==null?null:Icon(prefixIcon, size: 30,),
+          suffixIcon:suffixIcon==null?null:Icon(suffixIcon, size: 30,),
+          filled: true,
+          helperText: helperText,
+          fillColor: Colors.grey[200],
+          border: UnderlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          labelText: label
+      ),
+    );
+  }
+}
+

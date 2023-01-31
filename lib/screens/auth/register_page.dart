@@ -2,32 +2,35 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:trivo/screens/auth/register_page.dart';
+import 'package:trivo/screens/auth/login_page.dart';
 import 'package:trivo/screens/auth/widgets/background.dart';
 import 'package:trivo/utils/app_func.dart';
-import 'package:trivo/utils/providers.dart';
 
 import '../../components/app_button_round.dart';
 import '../../components/app_input.dart';
 import '../../components/app_text.dart';
 import '../../utils/app_const.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({
+class RegisterPage extends ConsumerStatefulWidget {
+  const RegisterPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  ConsumerState createState() => _LoginPageState();
+  ConsumerState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _RegisterPageState extends ConsumerState<RegisterPage> {
   final emailController = TextEditingController();
+  final nomController = TextEditingController();
+  final prenomController = TextEditingController();
   final passwordController = TextEditingController();
+  final password2Controller = TextEditingController();
+  var selectedCountryKey;
+
   bool isObscure = true;
   bool isLoading = false;
   final key = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         child: Column(
           children: [
             Background(
-              child: _buildLoginWidget(),
+              child: _buildRegisterWidget(),
             ),
           ],
         ),
@@ -44,18 +47,40 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     );
   }
 
-  _buildLoginWidget() {
+  _buildRegisterWidget() {
+
     return Form(
       key: key,
       child: SingleChildScrollView(
         child: Column(
           children: [
             const AppText(
-              "Connectez-vous:",
+              "Inscription",
               size: 32,
               isNormal: true,
               weight: FontWeight.bold,
             ),
+            const SizedBox(
+              height: 15,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            AppInput2(
+                hasSuffix: true,
+                controller: prenomController,
+                hint: "Votre prénom",
+                validator:
+                ValidationBuilder(requiredMessage: "Champ requis").build()),
+            const SizedBox(
+              height: 15,
+            ),
+            AppInput2(
+                hasSuffix: true,
+                controller: nomController,
+                hint: "Votre nom",
+                validator:
+                ValidationBuilder(requiredMessage: "Champ requis").build()),
             const SizedBox(
               height: 15,
             ),
@@ -78,25 +103,46 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 isObscure: isObscure,
                 validator: ValidationBuilder(requiredMessage: "Champ requis").build()),
             const SizedBox(
+              height: 20,
+            ),
+            AppInput2(
+                hasSuffix: true,
+                suffixIcon: IconButton(onPressed: (){setState(() {
+                  isObscure = !isObscure;
+                });}, icon: Icon(isObscure?Icons.remove_red_eye:Icons.password)),
+                controller: password2Controller,
+                hint: "Confirmer mot de passe",
+                isObscure: isObscure,
+                validator: ValidationBuilder(requiredMessage: "Champ requis").build()),
+            const SizedBox(
+              height: 15,
+            ),
+            Divider(),
+            const SizedBox(
               height: 40,
             ),
+
             AppButtonRound(
-              "Se connecter",
+              "S'inscrire",
               isLoading: isLoading,
               backgroundColor: AppColor.primary,
               onTap: () async {
                 if(!key.currentState!.validate()) {
                   return;
                 }
+                if(passwordController.text.trim()!=password2Controller.text.trim())
+                 {  showFlushBar(context, "Info", "Les deux mots de passe ne correspondent pas...");
+                  return;
+                }
                 if(!isLoading){
                   setState(() {
                     isLoading = true;
                   });
-                  // String error = await ref.read(userController).loginUser(emailController.text.trim(), passwordController.text.trim());
+
                   // if(error.isEmpty){
                   //   navigateToNextPage(context, const HomePage(), back: false);
                   // }else{
-                  //   showFlushBar(context, "Echec de la connexion", error);
+                  //   showFlushBar(context, "Echec de l'inscription", error);
                   // }
                   setState(() {
                     isLoading = false;
@@ -110,19 +156,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             Center(
               child: Text.rich(
                   TextSpan(
-                      text: "Vous n'avez pas un compte?  ",
+                      text: "J'ai déjà un compte?  ",
                       style: const TextStyle(color: Colors.black),
                       children: [
                         TextSpan(
-                          text: "Créer un compte",
+                          text: "Se connecter",
                           recognizer: TapGestureRecognizer()..onTap = () {
-                            navigateToNextPageWithTransition(context, const RegisterPage(), back: true);
+                            navigateToNextPageWithTransition(context, const LoginPage(), back: false);
                           },
                           style: const TextStyle(
                               color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                       ])),
-            ), 
+            ),
           ],
         ),
       ),

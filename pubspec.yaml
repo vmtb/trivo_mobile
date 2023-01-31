@@ -1,5 +1,5 @@
 name: trivo
-description: eImmobilier
+description: iSuccess_Project
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -32,6 +32,7 @@ dependencies:
   google_fonts:
   cached_network_image:
   url_launcher:
+  flutter_svg:
   sn_progress_dialog:
 
   flutter_local_notifications: # ^9.8.0
