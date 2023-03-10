@@ -1,4 +1,3 @@
-
 import 'dart:math' as m;
 
 import 'package:firebase_core/firebase_core.dart';
@@ -7,41 +6,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'app_func.dart';
 
-class Configurations{
-  static const _apiKey = "AIzaSyAuClARQDdQg6-PRpW4Foze6YUvBf0WARI";
-  static const _authDomain = "baikup-pro.firebaseapp.com";
-  static const _projectId = "baikup-pro";
-  static const _storageBucket = "baikup-pro.appspot.com";
-  static const _messagingSenderId ="981996463741";
-  static const _appId = "1:981996463741:web:ab955dfd2f15017b473314";
-
+class Configurations {
   static bool isFlutterLocalNotificationsInitialized = false;
-
-  //Make some getter functions
-  String get apiKey => _apiKey;
-  String get authDomain => _authDomain;
-  String get projectId => _projectId;
-  String get storageBucket => _storageBucket;
-  String get messagingSenderId => _messagingSenderId;
-  String get appId => _appId;
 }
 
-class Configurations2{
-  static const _apiKey = "AIzaSyAChj3uXiIO5-CTrh6bX_iQN2iASIm4WwA";
-  static const _authDomain = "mva-dev-5943d.firebaseapp.com";
-  static const _projectId = "mva-dev-5943d";
-  static const _storageBucket = "mva-dev-5943d.appspot.com";
-  static const _messagingSenderId ="746646617510";
-  static const _appId = "1:746646617510:web:518d3c3ac41b6127622367";
-
-//Make some getter functions
-  String get apiKey => _apiKey;
-  String get authDomain => _authDomain;
-  String get projectId => _projectId;
-  String get storageBucket => _storageBucket;
-  String get messagingSenderId => _messagingSenderId;
-  String get appId => _appId;
-}
+class Configurations2 {}
 
 String mainKey = "";
 late AndroidNotificationChannel channel;
@@ -52,15 +21,18 @@ Future<void> setupFlutterNotificationsCreateChannel() async {
     return;
   }
   channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'High Importance Notifications', // title
-      description: 'This channel is used for important notifications.', // description
-      importance: Importance.high,);
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description:
+        'This channel is used for important notifications.', // description
+    importance: Importance.high,
+  );
 
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
-
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
@@ -68,7 +40,6 @@ Future<void> setupFlutterNotificationsCreateChannel() async {
     sound: true,
   );
   Configurations.isFlutterLocalNotificationsInitialized = true;
-
 }
 
 void showFlutterNotification(RemoteMessage message) {
@@ -91,7 +62,6 @@ void showFlutterNotification(RemoteMessage message) {
     );
   }
 
-
   FirebaseMessaging.onMessageOpenedApp.listen((message) {
     log('Message clicked!');
     log(message);
@@ -100,7 +70,6 @@ void showFlutterNotification(RemoteMessage message) {
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-
   await Firebase.initializeApp();
   // if(currentEnv==ENV_MODE.dev) {
   //   await Firebase.initializeApp(name: 'secondary', options: FirebaseOptions(apiKey: Configurations2().apiKey,
@@ -112,4 +81,3 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("Handling a background message: ${message.messageId}");
   showFlutterNotification(message);
 }
-
